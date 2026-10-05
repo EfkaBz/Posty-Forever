@@ -1,0 +1,42 @@
+## Interface: 16001
+## Title: Posty (Forever)
+## Author: Xinhuan & Postal authors (Forever port: Daeler)
+## Version: 1.0.3
+## X-Credits: Based on Postal v4.3.4 by Xinhuan, Ammo, Rabbit, Grennon, Mikk, oscarucb, Jonny aka The_Original_Manbot - https://www.curseforge.com/wow/addons/postal
+## X-License: All Rights Reserved (Postal) - see LICENSE.txt
+## SavedVariables: PostyForeverDB
+## OptionalDeps: Ace3
+## IconTexture: Interface\AddOns\Posty_Forever\media\posty_forever_icon.png
+## Category: Daeler Addons
+## X-Category: Mail
+## Notes: Postal for WoW Forever: open all, select, express clicks, black book, quick attach, forward...
+## Notes-frFR: Postal pour WoW Forever : tout ouvrir, selection, clics express, carnet d'adresses, pieces jointes rapides, transfert...
+
+# --- Bibliotheques (Ace3) ------------------------------------------------------
+libs\LibStub\LibStub.lua
+libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
+libs\AceAddon-3.0\AceAddon-3.0.xml
+libs\AceEvent-3.0\AceEvent-3.0.xml
+libs\AceDB-3.0\AceDB-3.0.xml
+libs\AceHook-3.0\AceHook-3.0.xml
+libs\AceLocale-3.0\AceLocale-3.0.xml
+
+# --- Textes ----------------------------------------------------------------------
+locale\Localization.lua
+
+# --- Socle : menus deroulants (absents sur Forever), puis coeur de l'addon ------
+core\DropDown.lua
+core\Core.lua
+
+# --- Modules de Postal : chacun peut etre desactive depuis le menu de Posty ------
+modules\Express.lua
+modules\OpenAll.lua
+modules\Wire.lua
+modules\Select.lua
+modules\TradeBlock.lua
+modules\Rake.lua
+modules\BlackBook.lua
+modules\DoNotWant.lua
+modules\CarbonCopy.lua
+modules\Forward.lua
+modules\QuickAttach.lua
