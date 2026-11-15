@@ -180,6 +180,17 @@ function Postal_BlackBook.LevelClass(l, c)
 	return l.." "..className
 end
 
+-- Forever est sans royaume : le nom complet suffit comme destinataire.
+function Postal_BlackBook.AltName(p, r)
+	if RegionalUniqueNamesEnabled and RegionalUniqueNamesEnabled() then return p end
+	return p.."-"..r
+end
+
+-- Texte d'un reroll dans les menus : nom et faction, plus le royaume ailleurs.
+function Postal_BlackBook.AltLabel(p, r, f)
+	return Postal_BlackBook.AltName(p, r).."-"..f
+end
+
 function Postal_BlackBook.DeleteAlt(dropdownbutton, arg1, arg2, checked)
 	local realm = GetRealmName()
 	local faction = UnitFactionGroup("player")
@@ -288,8 +299,8 @@ function Postal_BlackBook:OnChar(editbox, ...)
 		for i = 1, #db do
 			local p, r, f = strsplit("|", db[i])
 			if p ~= player and r ~= realm then
-				if strfind(strupper(p.."-"..r):gsub("%s*",""), nosptext, 1, 1) == 1 then
-					newname = p.."-"..r
+				if strfind(strupper(Postal_BlackBook.AltName(p, r)):gsub("%s*",""), nosptext, 1, 1) == 1 then
+					newname = Postal_BlackBook.AltName(p, r)
 					break
 				end
 			end
@@ -619,12 +630,12 @@ elseif PostyDDM_MENU_VALUE == "allalt" then
 					if (pr ~= plre ) then
 						if l and c then
 							local clr = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[c] or RAID_CLASS_COLORS[c] or HIGHLIGHT_FONT_COLOR
-							info.text = format("%s-%s-%s |cff%.2x%.2x%.2x(%s)|r", p, r, f, clr.r*255, clr.g*255, clr.b*255, Postal_BlackBook.LevelClass(l, c))
+							info.text = format("%s |cff%.2x%.2x%.2x(%s)|r", Postal_BlackBook.AltLabel(p, r, f), clr.r*255, clr.g*255, clr.b*255, Postal_BlackBook.LevelClass(l, c))
 						else
-							info.text = ("%s-%s-%s"):format(p, r, f)
+							info.text = Postal_BlackBook.AltLabel(p, r, f)
 						end
 						info.func = Postal_BlackBook.SetSendMailName
-						info.arg1 = ("%s-%s"):format(p, r)
+						info.arg1 = Postal_BlackBook.AltName(p, r)
 						PostyDDM_AddButton(info, level)
 					end
 				end
@@ -728,7 +739,7 @@ elseif PostyDDM_MENU_VALUE == "allalt" then
 				local p, r, f, l, c = strsplit("|", db[i])
 				if (p ~= player or r ~= realm or f ~= faction) or all then
 					if all then
-						p = all and p.."-"..r.."-"..f or p
+						p = Postal_BlackBook.AltLabel(p, r, f)
 					else
 						p = all and p.."-"..r or p
 					end
@@ -774,7 +785,7 @@ elseif PostyDDM_MENU_VALUE == "allalt" then
 			for i = startIndex, endIndex do
 				local p, r, f, l, c = strsplit("|", db[i])
 				if (p ~= player or r ~= realm or f ~= faction) or all then
-					p = all and p.."-"..r.."-"..f or p
+					p = all and Postal_BlackBook.AltLabel(p, r, f) or p
 					if l and c then
 						local clr = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[c] or RAID_CLASS_COLORS[c] or HIGHLIGHT_FONT_COLOR
 						info.text = format("%s |cff%.2x%.2x%.2x(%s)|r", p, clr.r*255, clr.g*255, clr.b*255, Postal_BlackBook.LevelClass(l, c))
@@ -832,12 +843,12 @@ elseif PostyDDM_MENU_VALUE == "allalt" then
 				if (pr ~= plre ) then
 					if l and c then
 						local clr = CUSTOM_CLASS_COLORS and CUSTOM_CLASS_COLORS[c] or RAID_CLASS_COLORS[c] or HIGHLIGHT_FONT_COLOR
-						info.text = format("%s-%s-%s |cff%.2x%.2x%.2x(%s)|r", p, r, f, clr.r*255, clr.g*255, clr.b*255, Postal_BlackBook.LevelClass(l, c))
+						info.text = format("%s |cff%.2x%.2x%.2x(%s)|r", Postal_BlackBook.AltLabel(p, r, f), clr.r*255, clr.g*255, clr.b*255, Postal_BlackBook.LevelClass(l, c))
 					else
-						info.text = ("%s-%s-%s"):format(p, r, f)
+						info.text = Postal_BlackBook.AltLabel(p, r, f)
 					end
 					info.func = Postal_BlackBook.SetSendMailName
-					info.arg1 = ("%s-%s"):format(p, r)
+					info.arg1 = Postal_BlackBook.AltName(p, r)
 					PostyDDM_AddButton(info, level)
 				end
 			end

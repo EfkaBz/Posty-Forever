@@ -1,7 +1,7 @@
 ## Interface: 16001
 ## Title: Posty (Forever)
 ## Author: Xinhuan & Postal authors (Forever port: Daeler)
-## Version: 1.0.3
+## Version: 1.0.7
 ## X-Credits: Based on Postal v4.3.4 by Xinhuan, Ammo, Rabbit, Grennon, Mikk, oscarucb, Jonny aka The_Original_Manbot - https://www.curseforge.com/wow/addons/postal
 ## X-License: All Rights Reserved (Postal) - see LICENSE.txt
 ## SavedVariables: PostyForeverDB

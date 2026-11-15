@@ -33,6 +33,7 @@ local defaults = {
 			NeutralAHWon = true,
 			Postmaster = true,
 			Attachments = true,
+			GoldOnly = false,
 			SpamChat = true,
 			KeepFreeSpace = 1,
 		},
@@ -243,6 +244,22 @@ function Postal:ApplyLanguage()
 	for k, v in pairs(T.enUS) do rawset(L, k, v) end
 	if lang ~= "enUS" then
 		for k, v in pairs(T[lang]) do rawset(L, k, v) end
+	end
+	-- Les textes lus au chargement des fichiers sont encore dans la langue du
+	-- client : on retrouve leur cle et on les retraduit.
+	local rev = {}
+	for k, v in pairs(T[GetLocale()] or T.enUS) do rev[v] = k end
+	local function retranslate(s)
+		local k = s and rev[s]
+		return k and rawget(L, k) or s
+	end
+	for _, module in self:IterateModules() do
+		module.description = retranslate(module.description)
+		module.description2 = retranslate(module.description2)
+	end
+	for _, name in ipairs({ "POSTAL_RELOAD_LANGUAGE", "POSTAL_NEW_PROFILE", "POSTAL_QUICKATTACH_CHARACTER_NAME" }) do
+		local dialog = StaticPopupDialogs[name]
+		if dialog then dialog.text = retranslate(dialog.text) end
 	end
 end
 
@@ -706,6 +723,18 @@ function Postal:EnsureInboxUpdate()
 	if InboxFrame then InboxFrame:HookScript("OnShow", later) end
 	if InboxPrevPageButton then InboxPrevPageButton:HookScript("OnClick", later) end
 	if InboxNextPageButton then InboxNextPageButton:HookScript("OnClick", later) end
+	-- Changement de page par la molette ou autre : on surveille pageNum
+	-- pour que les numeros des cases suivent la page affichee.
+	if InboxFrame then
+		local lastPage
+		InboxFrame:HookScript("OnUpdate", function(self)
+			if self.pageNum ~= lastPage then
+				lastPage = self.pageNum
+				_G.InboxFrame_Update()
+			end
+		end)
+		InboxFrame:HookScript("OnHide", function() lastPage = nil end)
+	end
 	Postal.inboxUpdateDriver = driver
 end
 

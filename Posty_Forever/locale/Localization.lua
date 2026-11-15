@@ -168,6 +168,8 @@ L["TradeBlock"] = true
 L["Use Mr.Plow after opening"] = true
 L["Use Postal's auto-complete"] = true
 L["Verbose mode"] = true
+L["Take gold only"] = true
+L["|cFFFFCC00*|r Alt-Click the Open All button to take only the gold (items stay in the mail)."] = true
 L["Weapon Enchantment"] = true
 L["Wire"] = true
 L["Language"] = true
@@ -327,7 +329,6 @@ L["Verbose mode"] = "Ausführlicher Modus"
 L["Weapon Enchantment"] = "Waffenverzauberung"
 L["Wire"] = "Geldbetrag im Betreff"
 
-    return
 end
 
 L = AL3:NewLocale("Posty_Forever", "esES") or AL3:NewLocale("Posty_Forever", "esMX")
@@ -480,7 +481,6 @@ L["Verbose mode"] = "Modo detallado"
 L["Weapon Enchantment"] = "Encantamiento de armas"
 L["Wire"] = "Telegrama"
 
-    return
 end
 
 L = AL3:NewLocale("Posty_Forever", "frFR")
@@ -641,10 +641,11 @@ L["TradeBlock"] = "Bloqueur d'échanges"
 L["Use Mr.Plow after opening"] = "Utilisez Mr.Plow après l'ouverture"
 L["Use Postal's auto-complete"] = "Utiliser la saisie intuitive de Postal"
 L["Verbose mode"] = "Mode Bavard"
+L["Take gold only"] = "Prendre seulement l'or"
+L["|cFFFFCC00*|r Alt-Click the Open All button to take only the gold (items stay in the mail)."] = "|cFFFFCC00*|r Alt-Clic sur le bouton Tout ouvrir pour ne prendre que l'or (les objets restent dans le courrier)."
 L["Weapon Enchantment"] = "Enchantement de l'arme"
 L["Wire"] = "Lier"
 
-    return
 end
 
 L = AL3:NewLocale("Posty_Forever", "koKR")
@@ -799,7 +800,6 @@ L["Verbose mode"] = "대화창 메시지 표시"
 L["Weapon Enchantment"] = "무기 마법부여"
 L["Wire"] = "금액 표시"
 
-    return
 end
 
 L = AL3:NewLocale("Posty_Forever", "ruRU")
@@ -954,7 +954,6 @@ L["Verbose mode"] = "Детальный режим"
 L["Weapon Enchantment"] = "Зачарование оружия"
 L["Wire"] = "Оценка"
 
-    return
 end
 
 L = AL3:NewLocale("Posty_Forever", "zhCN")
@@ -1108,7 +1107,6 @@ L["Verbose mode"] = "消息模式"
 L["Weapon Enchantment"] = "武器附魔"
 L["Wire"] = "填充标题"
 
-    return
 end
 
 L = AL3:NewLocale("Posty_Forever", "zhTW")
@@ -1263,7 +1261,6 @@ L["Verbose mode"] = "訊息模式"
 L["Weapon Enchantment"] = "武器附魔"
 L["Wire"] = "自動填寫金額"
 
-    return
 end
 
 L = AL3:NewLocale("Posty_Forever", "ptBR")
@@ -1417,7 +1414,6 @@ L["Verbose mode"] = "Modo verbal"
 L["Weapon Enchantment"] = "Encantamento de Arma"
 L["Wire"] = "Telegrama"
 
-    return
 end
 
 L = AL3:NewLocale("Posty_Forever", "itIT")
@@ -1570,5 +1566,4 @@ L["Verbose mode"] = "Modalità Testuale"
 L["Weapon Enchantment"] = "Incantesimo delle armi"
 L["Wire"] = "telegramma"
 
-    return
 end

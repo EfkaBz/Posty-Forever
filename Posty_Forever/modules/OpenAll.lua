@@ -7,6 +7,7 @@ Postal_OpenAll.description2 = L[ [[|cFFFFCC00*|r Simple filters are available fo
 |cFFFFCC00*|r OpenAll will never delete any mail (mail without text is auto-deleted by the game when all attached items and gold are taken).
 |cFFFFCC00*|r OpenAll will skip CoD mails and mails from Blizzard.
 |cFFFFCC00*|r Disable the Verbose option to stop the chat spam while opening mail.]] ]
+	.. "\n" .. L["|cFFFFCC00*|r Alt-Click the Open All button to take only the gold (items stay in the mail)."]
 
 -- luacheck: globals InboxFrame
 
@@ -20,6 +21,7 @@ local Postal_OpenAllMenuButton
 local skipFlag
 local invFull, invAlmostFull
 local openAllOverride
+local goldOnly
 local firstMailDaysLeft
 
 -- WoW 10.0 Release Show/Hide Frame Handlers
@@ -165,7 +167,10 @@ function Postal_OpenAll:OpenAll(isRecursive)
 	lastNumAttach = nil
 	lastNumGold = nil
 	wait = false
-	if not isRecursive then openAllOverride = IsShiftKeyDown() end
+	if not isRecursive then
+		openAllOverride = IsShiftKeyDown()
+		goldOnly = IsAltKeyDown() or Postal.db.profile.OpenAll.GoldOnly
+	end
 	if mailIndex == 0 then
 		return
 	end
@@ -224,6 +229,24 @@ function Postal_OpenAll:ProcessNext()
 		-- Skip mail if it contains a CoD or if its from a GM
 		if (msgCOD and msgCOD > 0) or (isGM) then
 			skipFlag = true
+			mailIndex = mailIndex - 1
+			attachIndex = ATTACHMENTS_MAX_RECEIVE
+			return self:ProcessNext() -- tail call
+		end
+
+		-- Gold only: take the money of every mail, leave the items alone
+		if goldOnly then
+			if msgMoney > 0 then
+				if Postal.db.profile.OpenAll.SpamChat then
+					Postal:Print(format("%s %d: %s [%s]", L["Processing Message"], mailIndex, msgSubject or "", Postal:GetMoneyString(msgMoney)))
+				end
+				lastNumAttach, lastNumGold = Postal:CountItemsAndMoney()
+				TakeInboxMoney(mailIndex)
+				wait = true
+				updateFrame.lootingMoney = true
+				updateFrame:Show()
+				return
+			end
 			mailIndex = mailIndex - 1
 			attachIndex = ATTACHMENTS_MAX_RECEIVE
 			return self:ProcessNext() -- tail call
@@ -497,10 +520,15 @@ function Postal_OpenAll.ModuleMenu(self, level)
 			local listFrame = _G["PostyDDList"..level]
 			self.UncheckHack(_G[listFrame:GetName().."Button"..listFrame.numButtons])
 
-			info.text = L["Verbose mode"]
+			info.text = L["Take gold only"]
 			info.hasArrow = nil
 			info.value = nil
 			info.func = Postal.SaveOption
+			info.arg2 = "GoldOnly"
+			info.checked = db.GoldOnly
+			PostyDDM_AddButton(info, level)
+
+			info.text = L["Verbose mode"]
 			info.arg2 = "SpamChat"
 			info.checked = db.SpamChat
 			PostyDDM_AddButton(info, level)
