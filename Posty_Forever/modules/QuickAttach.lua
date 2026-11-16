@@ -267,6 +267,13 @@ local ForeverSubclassRemap = {
 	[18] = 11, -- Composants optionnels -> Autre
 }
 
+-- Objets utilitaires classes "Fournitures generales" mais qui ne sont pas des
+-- materiaux : jamais joints par le bouton Trade Goods (tous), seulement par "Other".
+local TradeGoodsAllExclude = {
+	[4470] = true, -- Bois simple
+	[4471] = true, -- Silex et amadou
+}
+
 -- Sous-classe d'un materiau telle que l'utilisent les boutons Forever
 local function GetForeverTradeGoodsSubclass(itemID, itemsubclassID)
 	if not itemsubclassID or itemsubclassID == 0 then
@@ -357,7 +364,8 @@ function Postal_QuickAttachLeftButtonClick(classID, subclassID)
 								if Postal.WOWForever and classID == 7 and subclassID ~= -1 then
 									itemsubclassID = GetForeverTradeGoodsSubclass(itemID, itemsubclassID)
 								end
-								if (itemsubclassID == subclassID or subclassID == -1) and not (classID == 2 and IsProfessionTool(itemID, itemclassID, itemsubclassID)) then
+								if (itemsubclassID == subclassID or subclassID == -1) and not (classID == 2 and IsProfessionTool(itemID, itemclassID, itemsubclassID))
+									and not (Postal.WOWForever and classID == 7 and subclassID == -1 and TradeGoodsAllExclude[itemID]) then
 										if SendMailNumberOfFreeSlots() > 0 then
 											if Postal.WOWBCClassic then
 												PickupContainerItem(bagID, slotIndex)
